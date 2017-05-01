@@ -50,6 +50,10 @@ public class Main {
                         System.out.println(param.getKey() + " = " + param.getValue());
                     }
                     
+                    long oauthTime = Long.parseLong(reqParams.getParams().get("oauth_timestamp"));
+                    java.util.Date timestamp = new java.util.Date((long)oauthTime * 1000);
+                    System.out.println("Request timestamp: " + timestamp.toString());
+                    
                     URI resource = Main.class.getClassLoader().getResource("index.html").toURI();
                     Path index = Paths.get(resource);
                     byte[] bytes = Files.readAllBytes(index);
