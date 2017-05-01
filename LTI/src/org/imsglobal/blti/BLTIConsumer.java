@@ -22,7 +22,7 @@
     Chuck Wight of the University of Utah and practicezone.org 
 @author Chuck Wight
 */
-
+/*
 package org.imsglobal.blti;
 
 import java.util.Random;
@@ -66,3 +66,4 @@ public class BLTIConsumer {
 		return (c==null?null:c.secret);
 	}
 }
+*/

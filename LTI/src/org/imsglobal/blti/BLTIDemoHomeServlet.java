@@ -24,7 +24,7 @@
 */
 
 package org.imsglobal.blti;
-
+/*
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
@@ -148,3 +148,4 @@ public class BLTIDemoHomeServlet extends HttpServlet {
 		doGet(request,response);
 	}
 }
+*/

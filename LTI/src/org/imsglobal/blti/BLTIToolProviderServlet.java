@@ -27,6 +27,7 @@
 
 package org.imsglobal.blti;
 
+/*
 import java.io.IOException;
 import java.util.Enumeration;
 
@@ -139,3 +140,4 @@ public void destroy() {
 }
 
 }
+*/
