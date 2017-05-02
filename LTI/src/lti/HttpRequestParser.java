@@ -2,9 +2,11 @@ package lti;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpsExchange;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
@@ -25,20 +27,36 @@ import java.util.Scanner;
 public class HttpRequestParser {
 
     private String _requestLine;
-    private HashMap<String, String> _requestHeaders;
+    private Map<String, String> _requestHeaders;
     private StringBuffer _messagetBody;
     private HttpExchange _he;
     private Map<String, String> _params = new HashMap<>();
-
+    private String _method;
+    private URL _url;
+    private InputStream _messageBodyStream;
+        
     public HttpRequestParser(HttpExchange he) {
         _requestHeaders = new HashMap<>();
         _messagetBody = new StringBuffer();
         _he = he;
-                        
+        _messageBodyStream = he.getRequestBody();
+        
+        _method = he.getRequestMethod();
+
+        String protocol;
+        if (he instanceof HttpsExchange) {
+            protocol = "https";
+        }
+        else {
+            protocol = "http";
+        }
+        
         try {
-            
             setRequestLine(he.getRequestURI().toString());
             parseRequest();
+                        
+            _url = new URL(protocol + "://" +  _requestHeaders.get("Host"));
+            _url = new URL(_url, he.getRequestURI().toString());
         } catch (IOException | HttpFormatException ex) {
         
         }
@@ -133,5 +151,21 @@ public class HttpRequestParser {
     
     public Map<String, String>getParams() {
         return _params;
+    }
+    
+    public String getParam(String key) {
+        return _params.get(key);
+    }
+    
+    public String getMethod() {
+        return _method;
+    }
+    
+    public String getRequestURL() {
+        return _url.toString();
+    }
+    
+    public InputStream getBodyStream() {
+        return _messageBodyStream;
     }
 }

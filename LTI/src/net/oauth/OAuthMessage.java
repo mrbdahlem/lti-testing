@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lti.HttpRequestParser;
 
 import net.oauth.client.OAuthClient;
 import net.oauth.http.HttpMessage;
@@ -66,6 +68,20 @@ public class OAuthMessage {
             }
         }
     }
+    
+    public OAuthMessage(HttpRequestParser reqParams) {
+        this.method = reqParams.getMethod();
+        this.URL = reqParams.getRequestURL();
+        this.bodyAsStream = reqParams.getBodyStream();
+        
+        this.parameters = new ArrayList<>(reqParams.getParams().size());
+        
+        for (Map.Entry p : reqParams.getParams().entrySet()) {
+            this.parameters.add(new OAuth.Parameter(
+                    toString(p.getKey()), toString(p.getValue())));
+        }
+
+    }
 
     public String method;
     public String URL;
@@ -75,6 +91,8 @@ public class OAuthMessage {
     private boolean parametersAreComplete = false;
     private final List<Map.Entry<String, String>> headers = new ArrayList<Map.Entry<String, String>>();
     private final InputStream bodyAsStream;
+
+   
     
     public String toString() {
         return "OAuthMessage(" + method + ", " + URL + ", " + parameters + ")";
