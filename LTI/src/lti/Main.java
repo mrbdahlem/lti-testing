@@ -115,7 +115,7 @@ public class Main {
                     Path index = Paths.get(resource);
                     byte[] bytes = Files.readAllBytes(index);
                     response = new String(bytes);
-                    /*
+                    
                     if (reqParams.getParam("launch_presentation_return_url") != null) {
                         response = "";
                         
@@ -130,7 +130,7 @@ public class Main {
                         os.close();
                         return;
                     }
-                    */
+                    
                     
                 } catch (URISyntaxException ex) {
                     System.out.println("No");
