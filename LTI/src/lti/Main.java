@@ -81,7 +81,7 @@ public class Main {
                     java.util.Date timestamp = new java.util.Date((long)oauthTime * 1000);
                     System.out.println("Request timestamp: " + timestamp.toString());
                     
-                    String oauth_secret = "2db8d81c801ede5150886056650c1b1f";
+                    String oauth_secret = "81fdf8aa4c575cb3962474d243e86089";
                                                             
                     OAuthMessage oam = new OAuthMessage(reqParams);
                     OAuthValidator oav = new SimpleOAuthValidator();
@@ -120,10 +120,14 @@ public class Main {
                         response = "";
                         
                         URI location = appendUri(reqParams.getParam("launch_presentation_return_url"),
-                                                 "lti_errorlog", 
-                                                 "The floor's on fire... see... *");
+                                                 "embed_type", 
+                                                 "oembed");
+                        location = appendUri(location.toString(), "url", "http://www.flickr.com/photos/bees/2341623661/");
+                        location = appendUri(location.toString(), "endpoint", "http://www.flickr.com/services/oembed/");
+                        
                         System.out.println(location.toString());
-                        respHead.add("Location", location.toString() + "%26*%20the%20chair.");
+                        
+                        respHead.add("Location", location.toString());
                         t.sendResponseHeaders(302, response.length());
                         OutputStream os = t.getResponseBody();
                         os.write(response.getBytes());
@@ -131,7 +135,10 @@ public class Main {
                         return;
                     }
                     
-                    
+                    if (reqParams.getParam("lis_outcome_service_url") != null) {
+                        URI location = new URI(reqParams.getParam("lis_outcome_service_url"));
+                        System.out.println(location.toString());
+                    }
                 } catch (URISyntaxException ex) {
                     System.out.println("No");
                 }
@@ -161,9 +168,7 @@ public class Main {
         
         
         String appendQuery = key + "=" + value;
-        
-        System.out.println(appendQuery);
-        
+                
         String newQuery = oldUri.getQuery();
         if (newQuery == null) {
             newQuery = appendQuery;
