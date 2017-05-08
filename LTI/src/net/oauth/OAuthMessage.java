@@ -69,6 +69,9 @@ public class OAuthMessage {
         }
     }
     
+    /**
+     *  Pull an OAuthMessage out of an HTTP Request 
+     */
     public OAuthMessage(HttpRequestParser reqParams) {
         this.method = reqParams.getMethod();
         this.URL = reqParams.getRequestURL();
@@ -80,7 +83,6 @@ public class OAuthMessage {
             this.parameters.add(new OAuth.Parameter(
                     toString(p.getKey()), toString(p.getValue())));
         }
-
     }
 
     public String method;
@@ -91,8 +93,6 @@ public class OAuthMessage {
     private boolean parametersAreComplete = false;
     private final List<Map.Entry<String, String>> headers = new ArrayList<Map.Entry<String, String>>();
     private final InputStream bodyAsStream;
-
-   
     
     public String toString() {
         return "OAuthMessage(" + method + ", " + URL + ", " + parameters + ")";
